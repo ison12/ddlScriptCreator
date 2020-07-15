@@ -1,4 +1,3 @@
-# *.[拡張子] diff=[文字コード]
 *.bat diff=sjis
 *.cls diff=sjis
 *.bas diff=sjis
