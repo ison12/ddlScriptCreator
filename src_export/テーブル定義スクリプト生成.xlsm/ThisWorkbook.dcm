@@ -1,0 +1,54 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "ThisWorkbook"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = True
+' ツールバーの名称
+Const BAR_NAME As String = "ddl_script_creator"
+
+' ------------------------------------------------------------------
+' ブックオープン時のイベント
+' ------------------------------------------------------------------
+Private Sub Workbook_Open()
+   
+    On Error GoTo err
+
+    Dim ini As New IniFile
+    ini.init VBUtil.convertOneDriveUrlToLocalFilePath(ThisWorkbook.Path) & "\" & ThisWorkbook.name & ".ini"
+    
+    ' DB種類
+    With ddl_script_creator.cboDbmsType
+        .AddItem Main.DBMS_TYPE_MYSQL
+        .AddItem Main.DBMS_TYPE_POSTGRESQL
+        .AddItem Main.DBMS_TYPE_SQLSERVER
+    End With
+    
+    ' 設定に失敗しても無視する
+    On Error Resume Next
+    ddl_script_creator.cboDbmsType.Text = ini.GetValue("Setting", "dbmsType")
+    On Error GoTo err
+    
+    ' 入力フォルダ
+    ddl_script_creator.txtInFolderPath.Text = ini.GetValue("Setting", "inFolder")
+    ' 出力フォルダ
+    ddl_script_creator.txtOutFolderPath.Text = ini.GetValue("Setting", "outFolder")
+
+    Exit Sub
+err:
+
+    MsgBox "エラーが発生しました。" & err.Number & " " & err.Description
+
+End Sub
+
+' ------------------------------------------------------------------
+' ブッククローズ時のイベント
+' ------------------------------------------------------------------
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+
+    
+End Sub
+
