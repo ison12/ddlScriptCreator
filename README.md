@@ -1,0 +1,2 @@
+# ddlScriptCreator
+DBのテーブル定義を基にして、DDLスクリプトファイルを生成するVBAマクロ
